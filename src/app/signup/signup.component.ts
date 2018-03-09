@@ -29,7 +29,7 @@ export class SignupComponent implements OnInit {
     signUp() {
         const val = this.form.value;
 
-        // TODO
+
 
     }
 

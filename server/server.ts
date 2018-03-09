@@ -36,8 +36,7 @@ if (options.secure) {
     // launch an HTTPS Server. Note: this does NOT mean that the application is secure
     httpsServer.listen(9000, () => console.log("HTTPS Secure Server running at https://localhost:" + httpsServer.address().port));
 
-}
-else {
+} else {
 
     // launch an HTTP Server
     const httpServer = app.listen(9000, () => {
