@@ -7,12 +7,13 @@ import {IUser} from "./db-user.model";
 class InMemoryDatabase {
     userCounter = 0;
 
-    static readAllLessons() {
+    readAllLessons() {
         return _.values(LESSONS);
     }
 
     createUser(email: string, password: string) {
-      const id = this.userCounter++;
+      this.userCounter++;
+      const id = this.userCounter;
 
       const user: IUser = {
         id,
