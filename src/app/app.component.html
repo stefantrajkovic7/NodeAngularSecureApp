@@ -7,17 +7,17 @@
                      src="https://angular-academy.s3.amazonaws.com/main-logo/main-page-logo-small-hat.png">
             </a>
         </li>
-        <li>
-            <a routerLink="/lessons">Lessons</a>
+        <li *ngIf="isLoggedIn$ | async">
+          <a routerLink="/lessons">Lessons</a>
         </li>
-        <li>
+        <li *ngIf="isLoggedOut$ | async">
             <a routerLink="/signup">Sign Up</a>
         </li>
-        <li>
+        <li *ngIf="isLoggedOut$ | async">
             <a routerLink="/login">Login</a>
         </li>
-        <li>
-            <a>Logout</a>
+        <li *ngIf="isLoggedIn$ | async">
+          <a>Logout</a>
         </li>
     </ul>
 
