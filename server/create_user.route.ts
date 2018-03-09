@@ -1,13 +1,18 @@
 import { Request, Response} from "express";
 import {db} from "./database";
 import {USERS} from "./database-data";
+import * as argon from 'argon2';
 
 export function createUser(req: Request, res: Response) {
   const credentials = req.body;
 
-  const user = db.createUser(credentials.email, credentials.password);
+  argon.hash(credentials.password)
+    .then(passwordDigest => {
+      const user = db.createUser(credentials.email, passwordDigest);
 
-  console.log(USERS);
+      console.log(USERS);
 
-  res.status(200).json({id: user.id, email: user.email});
+      res.status(200).json({id: user.id, email: user.email});
+    });
+
 }
