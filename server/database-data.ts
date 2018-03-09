@@ -1,4 +1,6 @@
+import {IUser} from "./db-user.model";
 
+export const USERS: { [key: number]: IUser } = {};
 
 export const LESSONS = {
 
