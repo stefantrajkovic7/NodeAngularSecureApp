@@ -25,4 +25,22 @@ export class AuthService {
       .do(user => this.subject.next(user));
   }
 
+  login(email: string, password: string ) {
+    return this.http.post<IUser>('/api/login', {email, password})
+      .shareReplay()
+      .do(user => this.subject.next(user));
+  }
+
+  // loginAsUser(email:string) {
+  //   return this.http.post<User>('/api/admin', {email})
+  //     .shareReplay()
+  //     .do(user => this.subject.next(user));
+  // }
+  //
+  // logout() : Observable<any> {
+  //   return this.http.post('/api/logout', null)
+  //     .shareReplay()
+  //     .do(user => this.subject.next(ANONYMOUS_USER));
+  // }
+
 }
