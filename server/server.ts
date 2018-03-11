@@ -6,11 +6,12 @@ import * as fs from 'fs';
 import * as https from 'https';
 import {readAllLessons} from "./routes/read-all-lessons.route";
 import {createUser} from "./routes/create_user.route";
-
+const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 
 const app: Application = express();
 
+app.use(cookieParser());
 app.use(bodyParser.json());
 
 const commandLineArgs = require('command-line-args');

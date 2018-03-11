@@ -4,6 +4,7 @@ import { USERS } from "../core/database-data";
 import * as argon from 'argon2';
 import { validatePassword } from "../helpers/password-validation.helper";
 import {randomBytes} from "../helpers/security.utils";
+import {sessionStore} from "../core/session-store";
 
 export function createUser(req: Request, res: Response) {
   const credentials = req.body;
@@ -28,6 +29,9 @@ async function createUserAndSession(res: Response, credentials) {
   console.log(USERS);
   console.log(sessionId, "sessionId");
 
+  sessionStore.createSession(sessionId, user);
+
+  res.cookie("SESSIONID", sessionId);
   res.status(200).json({id: user.id, email: user.email});
 
 }
