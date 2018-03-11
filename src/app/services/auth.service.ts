@@ -17,7 +17,11 @@ export class AuthService {
   isLoggedIn$: Observable<boolean> = this.user$.map(user => !!user.id);
   isLoggedOut$: Observable<boolean> = this.isLoggedIn$.map(isLoggedIn => !isLoggedIn);
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+    http.get<IUser>('/api/user')
+      .subscribe(user => this.subject.next(user ? user : ANONYMOUS_USER));
+
+  }
 
   signUp(email: string, password: string) {
     return this.http.post<IUser>('/api/signup', { email, password })
