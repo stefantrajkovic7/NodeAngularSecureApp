@@ -7,6 +7,14 @@ export class SessionStore {
   createSession(sessionId: string, user: IUser) {
     this.sessions[sessionId] = new Session(sessionId, user);
   }
+  findUserBySessionId(sessionId: string): IUser | undefined {
+    const session = this.sessions[sessionId];
+
+    const isSessionValid = session && session.isValid();
+
+    return isSessionValid ? session.user : undefined;
+  }
+
 }
 
 export const sessionStore = new SessionStore();

@@ -4,6 +4,7 @@ import {Observable} from "rxjs/Observable";
 import {IUser} from "../model/user.model";
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
 import 'rxjs/add/operator/shareReplay';
+import 'rxjs/add/operator/filter';
 
 export const ANONYMOUS_USER: IUser = {
   id: undefined,
@@ -12,8 +13,8 @@ export const ANONYMOUS_USER: IUser = {
 
 @Injectable()
 export class AuthService {
-  private subject = new BehaviorSubject<IUser>(ANONYMOUS_USER);
-  user$: Observable<IUser> = this.subject.asObservable();
+  private subject = new BehaviorSubject<IUser>(undefined);
+  user$: Observable<IUser> = this.subject.asObservable().filter(user => !!user);
   isLoggedIn$: Observable<boolean> = this.user$.map(user => !!user.id);
   isLoggedOut$: Observable<boolean> = this.isLoggedIn$.map(isLoggedIn => !isLoggedIn);
 
