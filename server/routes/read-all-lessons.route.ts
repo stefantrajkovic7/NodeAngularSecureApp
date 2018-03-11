@@ -1,11 +1,7 @@
-
-
-import {db} from "./database";
-
-
+import {db} from "../core/database";
 
 export function readAllLessons(req, res) {
 
-
     return res.status(200).json(db.readAllLessons());
+
 }

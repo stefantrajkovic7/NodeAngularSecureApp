@@ -4,8 +4,8 @@ import * as express from 'express';
 import {Application} from "express";
 import * as fs from 'fs';
 import * as https from 'https';
-import {readAllLessons} from "./read-all-lessons.route";
-import {createUser} from "./create_user.route";
+import {readAllLessons} from "./routes/read-all-lessons.route";
+import {createUser} from "./routes/create_user.route";
 
 const bodyParser = require('body-parser');
 

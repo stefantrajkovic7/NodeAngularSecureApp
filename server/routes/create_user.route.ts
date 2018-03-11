@@ -1,9 +1,9 @@
 import { Request, Response} from "express";
-import { db } from "./database";
-import { USERS } from "./database-data";
+import { db } from "../core/database";
+import { USERS } from "../core/database-data";
 import * as argon from 'argon2';
-import { validatePassword } from "./password-validation.helper";
-import {randomBytes} from "./security.utils";
+import { validatePassword } from "../helpers/password-validation.helper";
+import {randomBytes} from "../helpers/security.utils";
 
 export function createUser(req: Request, res: Response) {
   const credentials = req.body;
