@@ -7,6 +7,7 @@ import {createUser} from "./routes/create_user.route";
 import {getUser} from "./routes/get-user.route";
 import {logout} from "./routes/logout.route";
 import {login} from "./routes/login.route";
+import {retrieveUserIdFromRequest} from "./middlewares/get-user";
 
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
@@ -14,6 +15,7 @@ const cookieParser = require('cookie-parser');
 
 const app: Application = express();
 
+app.use(retrieveUserIdFromRequest);
 app.use(cookieParser());
 app.use(bodyParser.json());
 
@@ -38,7 +40,7 @@ app.route('/api/user')
   .get(getUser);
 
 app.route('/api/logout')
-  .post( logout);
+  .post(logout);
 
 app.route('/api/login')
   .post(login);
