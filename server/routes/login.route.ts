@@ -1,14 +1,14 @@
-import { Request, Response } from 'express';
-import * as argon from 'argon2';
+import {Request, Response} from "express";
+import * as argon2 from 'argon2';
 import {db} from "../core/database";
 import {IUser} from "../models/db-user.model";
-import {sessionStore} from "../core/session-store";
-import {randomBytes} from "../helpers/security.utils";
+
 
 export function login(req: Request, res: Response) {
+
   const credentials = req.body;
 
-  const user =  db.findUserByEmail(credentials.email);
+  const user = db.findUserByEmail(credentials.email);
 
   if (!user) {
     res.sendStatus(403);
@@ -18,30 +18,36 @@ export function login(req: Request, res: Response) {
 
 }
 
-async function loginAndBuildResponse(credentials: any, user: IUser, res: Response) {
+async function loginAndBuildResponse(credentials: any, user: IUser,  res: Response) {
 
   try {
-    const sessionId = await attemptLogin(credentials, user);
 
-    res.cookie("SESSIONID", sessionId, { httpOnly: true });
+    const sessionToken = await attemptLogin(credentials, user);
+
+    console.log("Login successful");
+
+    res.cookie("SESSIONID", sessionToken, {httpOnly: true, secure: true});
+
     res.status(200).json({id: user.id, email: user.email});
+
   } catch (err) {
+
+    console.log("Login failed!");
+
     res.sendStatus(403);
   }
-
 }
 
+
 async function attemptLogin(credentials: any, user: IUser) {
-  const isPasswordValid = await argon.verify(user.passwordDigest,
-                                            credentials.password);
+
+  const isPasswordValid = await argon2.verify(user.passwordDigest,
+    credentials.password);
 
   if (!isPasswordValid) {
     throw new Error("Password Invalid");
   }
 
-  const sessionId = await randomBytes(32).then(bytes => bytes.toString('hex'));
-
-  sessionStore.createSession(sessionId, user);
-
-  return sessionId;
+  // TODO return JWT
+  return 1;
 }

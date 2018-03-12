@@ -1,51 +1,55 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from "@angular/common/http";
+import {Injectable} from '@angular/core';
+import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs/Observable";
-import {IUser} from "../model/user.model";
+import {User} from "../model/user";
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
-import 'rxjs/add/operator/shareReplay';
-import 'rxjs/add/operator/filter';
 
-export const ANONYMOUS_USER: IUser = {
-  id: undefined,
-  email: ''
-};
+export const ANONYMOUS_USER: User = {
+    id: undefined,
+    email: ''
+}
+
 
 @Injectable()
 export class AuthService {
-  private subject = new BehaviorSubject<IUser>(undefined);
-  user$: Observable<IUser> = this.subject.asObservable().filter(user => !!user);
-  isLoggedIn$: Observable<boolean> = this.user$.map(user => !!user.id);
-  isLoggedOut$: Observable<boolean> = this.isLoggedIn$.map(isLoggedIn => !isLoggedIn);
 
-  constructor(private http: HttpClient) {
-    http.get<IUser>('/api/user')
-      .subscribe(user => this.subject.next(user ? user : ANONYMOUS_USER));
+    private subject = new BehaviorSubject<User>(undefined);
 
-  }
+    user$: Observable<User> = this.subject.asObservable().filter(user => !!user);
 
-  signUp(email: string, password: string) {
-    return this.http.post<IUser>('/api/signup', { email, password })
-      .shareReplay()
-      .do(user => this.subject.next(user));
-  }
+    isLoggedIn$: Observable<boolean> = this.user$.map(user => !!user.id);
 
-  login(email: string, password: string ) {
-    return this.http.post<IUser>('/api/login', {email, password})
-      .shareReplay()
-      .do(user => this.subject.next(user));
-  }
+    isLoggedOut$: Observable<boolean> = this.isLoggedIn$.map(isLoggedIn => !isLoggedIn);
 
-  // loginAsUser(email:string) {
-  //   return this.http.post<User>('/api/admin', {email})
-  //     .shareReplay()
-  //     .do(user => this.subject.next(user));
-  // }
+    constructor(private http: HttpClient) {
+        http.get<User>('/api/user')
+            .subscribe(user => this.subject.next(user ? user : ANONYMOUS_USER));
+    }
 
-  logout(): Observable<any> {
-    return this.http.post('/api/logout', null)
-      .shareReplay()
-      .do(user => this.subject.next(ANONYMOUS_USER));
-  }
+    signUp(email:string, password:string ) {
 
+        return this.http.post<User>('/api/signup', {email, password})
+            .shareReplay()
+            .do(user => this.subject.next(user));
+    }
+
+    login(email:string, password:string ) {
+        return this.http.post<User>('/api/login', {email, password})
+            .shareReplay()
+            .do(user => this.subject.next(user));
+    }
+
+    logout() : Observable<any> {
+        return this.http.post('/api/logout', null)
+            .shareReplay()
+            .do(user => this.subject.next(ANONYMOUS_USER));
+    }
 }
+
+
+
+
+
+
+
+

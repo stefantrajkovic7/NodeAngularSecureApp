@@ -1,37 +1,37 @@
-import { Request, Response} from "express";
-import { db } from "../core/database";
-import { USERS } from "../core/database-data";
-import * as argon from 'argon2';
-import { validatePassword } from "../helpers/password-validation.helper";
-import {randomBytes} from "../helpers/security.utils";
-import {sessionStore} from "../core/session-store";
+
+import {Request, Response} from "express";
+import * as argon2 from 'argon2';
+import moment = require("moment");
+import {validatePassword} from "../helpers/password-validation.helper";
+import {db} from "../core/database";
+
 
 export function createUser(req: Request, res: Response) {
+
   const credentials = req.body;
+
   const errors = validatePassword(credentials.password);
 
   if (errors.length > 0) {
     res.status(400).json({errors});
   } else {
-      createUserAndSession(res, credentials);
+
+    createUserAndSession(res, credentials);
+
   }
 
 }
 
 async function createUserAndSession(res: Response, credentials) {
 
-  const passwordDigest = await argon.hash(credentials.password);
+  const passwordDigest = await argon2.hash(credentials.password);
 
   const user = db.createUser(credentials.email, passwordDigest);
 
-  const sessionId = await randomBytes(32).then(bytes => bytes.toString('hex'));
+  // TODO replace with JWT
+  const sessionToken = 1;
 
-  console.log(USERS);
-  console.log(sessionId, "sessionId");
+  res.cookie("SESSIONID", sessionToken, {httpOnly: true});
 
-  sessionStore.createSession(sessionId, user);
-
-  res.cookie("SESSIONID", sessionId, { httpOnly: true });
   res.status(200).json({id: user.id, email: user.email});
-
 }

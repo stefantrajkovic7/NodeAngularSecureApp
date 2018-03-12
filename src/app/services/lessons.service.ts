@@ -10,19 +10,16 @@ export class LessonsService {
 
     constructor(private http: HttpClient) {
 
-
     }
 
-
-    loadAllLessons(): Observable<Lesson[]> {
+    loadAllLessons() : Observable<Lesson[]> {
         return this.http.get<any>('/api/lessons')
-          .map(res => res.lessons);
+            .map(res => res.lessons);
     }
 
-
-    findLessonById(id: number) {
+    findLessonById(id:number) {
         return this.http.get<Lesson>('/api/lessons/' + id);
     }
 
-
 }
+

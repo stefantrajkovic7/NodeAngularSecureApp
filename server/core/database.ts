@@ -3,12 +3,14 @@ import * as _ from 'lodash';
 import {LESSONS, USERS} from "./database-data";
 import {IUser} from "../models/db-user.model";
 
-class InMemoryDatabase {
-    userCounter = 0;
 
-    readAllLessons() {
-        return _.values(LESSONS);
-    }
+class InMemoryDatabase {
+
+  userCounter = 0;
+
+  readAllLessons() {
+    return _.values(LESSONS);
+  }
 
   createUser(email: string, passwordDigest: string) {
 
@@ -27,8 +29,7 @@ class InMemoryDatabase {
     const user: IUser = {
       id,
       email,
-      passwordDigest,
-      roles: ["STUDENT"]
+      passwordDigest
     };
 
     USERS[id] = user;
@@ -38,17 +39,12 @@ class InMemoryDatabase {
     return user;
   }
 
-  findUserByEmail(email: string): IUser {
 
-    console.log("Finding user by email:", email);
+  findUserByEmail(email: string): IUser {
 
     const users = _.values(USERS);
 
-    const user = _.find(users, user => user.email === email);
-
-    console.log("user retrieved:", user);
-
-    return user;
+    return _.find(users, user => user.email === email);
   }
 
   findUserById(userId: string): IUser {
