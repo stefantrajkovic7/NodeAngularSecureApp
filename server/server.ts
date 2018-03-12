@@ -8,6 +8,7 @@ import {readAllLessons} from "./routes/read-all-lessons.route";
 import {createUser} from "./routes/create_user.route";
 import {getUser} from "./routes/get-user.route";
 import {logout} from "./routes/logout.route";
+import {login} from "./routes/login.route";
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 
@@ -34,6 +35,9 @@ app.route('/api/signup')
 
 app.route('/api/user')
     .get(getUser);
+
+app.route('/api/login')
+    .post(login);
 
 app.route('/api/logout')
     .post(logout);
