@@ -4,6 +4,7 @@ import * as argon2 from 'argon2';
 import moment = require("moment");
 import {validatePassword} from "../helpers/password-validation.helper";
 import {db} from "../core/database";
+import {createSessionToken} from "../helpers/security.utils";
 
 
 export function createUser(req: Request, res: Response) {
@@ -28,8 +29,7 @@ async function createUserAndSession(res: Response, credentials) {
 
   const user = db.createUser(credentials.email, passwordDigest);
 
-  // TODO replace with JWT
-  const sessionToken = 1;
+  const sessionToken = await createSessionToken(user.id.toString());
 
   res.cookie("SESSIONID", sessionToken, {httpOnly: true});
 
