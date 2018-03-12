@@ -21,4 +21,8 @@ export class AppComponent implements OnInit {
     this.isLoggedOut$ = this.authService.isLoggedOut$;
   }
 
+  logout() {
+    this.authService.logout().subscribe();
+  }
+
 }
