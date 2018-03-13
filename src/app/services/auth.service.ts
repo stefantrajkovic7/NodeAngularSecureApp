@@ -7,8 +7,7 @@ import {BehaviorSubject} from "rxjs/BehaviorSubject";
 export const ANONYMOUS_USER: User = {
     id: undefined,
     email: ''
-}
-
+};
 
 @Injectable()
 export class AuthService {
@@ -26,20 +25,20 @@ export class AuthService {
             .subscribe(user => this.subject.next(user ? user : ANONYMOUS_USER));
     }
 
-    signUp(email:string, password:string ) {
+    signUp(email: string, password: string ) {
 
         return this.http.post<User>('/api/signup', {email, password})
             .shareReplay()
             .do(user => this.subject.next(user));
     }
 
-    login(email:string, password:string ) {
+    login(email: string, password: string ) {
         return this.http.post<User>('/api/login', {email, password})
             .shareReplay()
             .do(user => this.subject.next(user));
     }
 
-    logout() : Observable<any> {
+    logout(): Observable<any> {
         return this.http.post('/api/logout', null)
             .shareReplay()
             .do(user => this.subject.next(ANONYMOUS_USER));
