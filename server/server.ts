@@ -15,8 +15,10 @@ const cookieParser = require('cookie-parser');
 
 const app: Application = express();
 
-app.use(retrieveUserIdFromRequest);
+
+// Middleware
 app.use(cookieParser());
+app.use(retrieveUserIdFromRequest);
 app.use(bodyParser.json());
 
 
